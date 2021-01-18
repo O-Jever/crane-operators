@@ -9,6 +9,6 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   getListOfShifts() {
-    return this.http.get();
+    return this.http.get('');
   }
 }
