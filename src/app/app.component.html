@@ -1,0 +1,43 @@
+<div class="wrapper">
+
+  <div class="header">
+    <h1 class="header__title">Список смен</h1>
+    <button mat-button (click)="addShift()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef> ФИО </th>
+      <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef> Начало </th>
+      <td mat-cell *matCellDef="let element"> {{element.start}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef> Окончание </th>
+      <td mat-cell *matCellDef="let element"> {{element.end}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="craneType">
+      <th mat-header-cell *matHeaderCellDef> Тип крана </th>
+      <td mat-cell *matCellDef="let element"> {{element.craneType}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="loadedTons">
+      <th mat-header-cell *matHeaderCellDef> Погруженно тонн </th>
+      <td mat-cell *matCellDef="let element"> {{element.loadedTons}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+

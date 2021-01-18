@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,18 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   imports: [
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule
   ],
   exports: [
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
