@@ -170,11 +170,14 @@ export class ShiftFormDialog {
         });
 
         if(this.data.isChange) {
-            this.appService.editShift(this.shiftForm.value.id, shift).subscribe();
+            this.appService.editShift(this.shiftForm.value.id, shift).subscribe(() => {
+                this.close();
+            });
         } else {
-            this.appService.addShift( shift).subscribe();
+            this.appService.addShift( shift).subscribe(() => {
+                this.close();
+            });
         }
-        this.close();
     }
 
 }
