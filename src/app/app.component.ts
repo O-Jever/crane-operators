@@ -13,7 +13,7 @@ import * as moment from 'moment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   
   public displayedColumns: string[] = ['fullName', 'start', 'end', 'craneCount', 'cranes', 'actions'];
   public dataSource: MatTableDataSource<any>;
@@ -28,10 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getShifts();
-  }
-
-  ngOnDestroy(): void {
-   
   }
 
   getShifts(): void {
@@ -63,7 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public editShift(shift: Shift) {
-    console.log("this.dataSource");
     const dialogRef = this.openDialog({shift, title: 'Редактирование', isChange: true}, ShiftFormDialog);
     this.afterClosed(dialogRef);
   }
@@ -88,10 +83,4 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  private errorMessage(message): void {
-    this._snackBar.open(message, 'Закрыть', {
-      duration: 2000,
-      verticalPosition: 'top',
-    });
-  } 
 }
