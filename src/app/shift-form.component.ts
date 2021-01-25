@@ -1,8 +1,6 @@
 import {Component, Inject} from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppService } from './app.service';
 
 @Component({
@@ -18,7 +16,6 @@ export class ShiftFormDialog {
 
     constructor(
         private appService: AppService,
-        private _snackBar: MatSnackBar,
         public dialogRef: MatDialogRef<ShiftFormDialog>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
             this.shiftForm = new FormGroup({
