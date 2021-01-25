@@ -1,0 +1,98 @@
+<h1 mat-dialog-title>{{ data.title }} смены</h1>
+<div mat-dialog-content>
+    <form [formGroup]="shiftForm" class="shift-form">
+        <div class="shift-form__craneCount">
+            <h4>Тип крана</h4>
+            <mat-form-field>
+                <mat-label>Выберите тип крана</mat-label>
+                <mat-select formControlName="craneCount" [disabled]="data.isChange">
+                    <!-- [disabled]="!!shiftForm.get('craneType').value" -->
+                    <mat-option *ngFor="let craneType of craneTypes; index as i" [value]="i+1" (click)="addCrane(i+1)">
+                        {{ craneType }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="shift-form__fullName">
+            <h4>ФИО ответственного</h4>
+            <mat-form-field>
+                <mat-label>ФИО</mat-label>
+                <input formControlName="fullName" matInput>
+            </mat-form-field>
+        </div>
+
+        <div class="shift-form__dates">
+            <h4>Дата начала</h4>
+            <mat-form-field>
+                <mat-label>Выберите дату</mat-label>
+                <input formControlName="start" type="datetime-local" matInput>
+            </mat-form-field>
+
+            <h4>Дата окончания</h4>
+            <mat-form-field>
+                <mat-label>Выберите дату</mat-label>
+                <input formControlName="end" type="datetime-local" matInput>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="shiftForm.value.craneCount; then crane"></div>
+        
+    </form>
+    {{ shiftForm.value | json }}
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">Закрыть</button>
+    <button mat-button (click)="setShift()">Отправить</button>
+</div>
+
+<ng-template #crane>
+    <form [formGroup]="shiftForm">
+        <div class="table-header table-row">
+            <span class="table-header__truck">Грузовик</span>
+            <span>Погружено, т</span>
+            <span>Выгружено, т</span>
+        </div>
+
+        <div formArrayName="cranes">
+            <div *ngFor="let crane of cranes.controls; index as i">
+                <h4 class="crane-name">Кран <span *ngIf="shiftForm.value.craneCount === 2">{{ i + 1 }}</span></h4>
+                <div [formArrayName]="i">
+                    <div *ngFor="let _ of cranes.controls[i]['controls']; index as j" class="table-row">
+                        <ng-container [formGroupName]="j">
+                            <mat-form-field class="truck">
+                                <mat-label>Выберите грузовик</mat-label>
+                                <mat-select formControlName="truck">
+                                    <mat-option *ngFor="let truck of trucksForSelect(i, j)" [value]="truck" (click)="add(i, j)">
+                                        {{ truck }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                
+                            <mat-form-field class="loaded">
+                                <input formControlName="loaded" matInput (change)="mutualDisable(i, j, 'unloaded', 'loaded')">
+                            </mat-form-field>
+                
+                            <mat-form-field class="unloaded">
+                                <input formControlName="unloaded" matInput (change)="mutualDisable(i, j, 'loaded', 'unloaded')">
+                            </mat-form-field>
+        
+                            <button mat-button (click)="delete(i, j)" *ngIf="needToShowButton(i, j)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    <div class="total">
+        <div>
+            <h4>Всего погружено {{ getTotalByProp('loaded') }} т</h4>
+            <h4>Всего выгружено {{ getTotalByProp('unloaded') }} т</h4>
+        </div> 
+    </div>
+</ng-template>

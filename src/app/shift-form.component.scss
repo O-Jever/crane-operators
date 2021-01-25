@@ -1,0 +1,74 @@
+h4 {
+    margin: 0;
+}
+.mat-dialog-actions {
+    float: right;
+}
+
+.shift-form {
+    &__craneCount > mat-form-field {
+        width: 250px;
+    }
+
+    &__fullName {
+        margin-top: 10px;
+
+        & > mat-form-field {
+            width: 100% !important;
+        }
+    }
+
+    &__dates {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin: 10px 0;
+
+        & > mat-form-field {
+            width: 165px ;
+        }
+    }
+}
+
+.table-header {
+    margin-bottom: 10px;
+
+    &__truck {
+        padding-left: 30px;
+    }
+}
+
+.crane-name {
+    margin: 10px 0;
+}
+
+.crane-name, .total h4 {
+    font-weight: 500;
+}
+
+.loaded, .unloaded {
+    width: 100px;
+}
+
+.truck {
+    width: 210px;
+}
+
+.total {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 64px;
+}
+
+.table-row button {
+    padding-right: 0;
+}
+
+hr {
+    border-top: 1px solid rgba(0,0,0,.12);
+    border-bottom: 0;
+}
