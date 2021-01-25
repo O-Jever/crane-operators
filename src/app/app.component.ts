@@ -1,7 +1,5 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppService } from './app.service';
 import { ShiftFormDialog } from './shift-form.component';
@@ -18,13 +16,7 @@ export class AppComponent implements OnInit {
   public displayedColumns: string[] = ['fullName', 'start', 'end', 'craneCount', 'cranes', 'actions'];
   public dataSource: MatTableDataSource<any>;
 
-  constructor(
-    private appService: AppService,
-    public dialog: MatDialog, 
-    private _snackBar: MatSnackBar
-    ) { }
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  constructor(private appService: AppService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getShifts();
@@ -33,7 +25,6 @@ export class AppComponent implements OnInit {
   getShifts(): void {
     this.appService.getListOfShifts().subscribe(data => {
       this.dataSource = new MatTableDataSource<Shift>(data);
-      this.dataSource.paginator = this.paginator;
     });
   }
 
