@@ -6,7 +6,6 @@
             <mat-form-field>
                 <mat-label>Выберите тип крана</mat-label>
                 <mat-select formControlName="craneCount" [disabled]="data.isChange">
-                    <!-- [disabled]="!!shiftForm.get('craneType').value" -->
                     <mat-option *ngFor="let craneType of craneTypes; index as i" [value]="i+1" (click)="addCrane(i+1)">
                         {{ craneType }}
                     </mat-option>
@@ -39,7 +38,6 @@
         <div *ngIf="shiftForm.value.craneCount; then crane"></div>
         
     </form>
-    {{ shiftForm.value | json }}
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="close()">Закрыть</button>
