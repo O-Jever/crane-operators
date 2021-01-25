@@ -38,10 +38,12 @@ export class ShiftFormDialog {
             this.trucks = ['Грузовик 1', 'Грузовик 2', 'Грузовик 3'];
     }
 
-    fillData(shift) {
+    private fillData(shift) {
         for (let craneID in shift.cranes) {
             this.cranes.push(new FormArray([]));
 
+            //Добавляет инпуты в форму для каждого грузовика из входных данных
+            //Предварительно выключает пустые инпуты
             for (let i = 0; i < shift.cranes[craneID].length; i++) {
                 this.cranes.controls[craneID].push(new FormGroup({
                     truck: new FormControl(''),
@@ -53,6 +55,7 @@ export class ShiftFormDialog {
        
         this.shiftForm.setValue(shift);
 
+        //Добавляет пустые инпуты для добавления информации по следующему грузовику
         for (let craneID in shift.cranes) {
             this.cranes.controls[craneID].push(new FormGroup({
                 truck: new FormControl(''),
@@ -62,11 +65,14 @@ export class ShiftFormDialog {
         }
     }
 
+    //Отвечает за вкл/выкл связанных инпутов
     public mutualDisable(i, j, disableProp, enableProp) {
+        //Включение обоих инпутов, если оба пустые
         if (!this.cranes.value[i][j][enableProp] && !this.cranes.value[i][j][disableProp]) {
             this.enableControl(i, j, disableProp);
             this.enableControl(i, j, enableProp);
-        } else if (this.cranes.value[i][j][enableProp]) {
+        //При наличии значения в инпуте выключает противоположный
+        } else if (this.cranes.value[i][j][enableProp]) { 
             this.disableControl(i, j, disableProp);
             this.enableControl(i, j, enableProp);
         } else {
@@ -87,13 +93,15 @@ export class ShiftFormDialog {
         return this.shiftForm.get('cranes') as FormArray;
     }
 
-    addCrane(craneCount: number) {
+    //Очищает и по новой добавляет данные по кранам в форме при изменении их кол-ва
+    public addCrane(craneCount: number) {
         this.cranes.clear();
         for(let i = 0; i < craneCount; i++) {
             this.cranes.push(
                 new FormArray([
                     new FormGroup({
                         truck: new FormControl(''),
+                        //По умолчанию блокируем инпуты, т.к. данные пусты
                         loaded: new FormControl({ value: '', disabled: true }),
                         unloaded: new FormControl({ value: '', disabled: true })
                     })
@@ -103,13 +111,14 @@ export class ShiftFormDialog {
         
     }
 
-    delete(i: number, j: number) {
+    public delete(i: number, j: number) {
         (this.cranes.controls[i] as FormArray).removeAt(j);
 
         this.add(i, j);
     }
 
-    add(i: number, j: number) {
+    //Добавляет при необходимости (пока доступны грузовики) пустые инпуты 
+    public add(i: number, j: number) {
         const emptyTrucks = this.cranes.value[i].filter(({ truck }) => !truck);
 
         if (!emptyTrucks.length && this.trucks.length !== this.cranes.value[i].length) {
@@ -121,11 +130,13 @@ export class ShiftFormDialog {
             }));
         }
 
+        //Разблокирует инпуты, т.к. выбран грузовик
         this.enableControl(i, j, 'loaded');
         this.enableControl(i, j, 'unloaded');
     }
 
-    trucksForSelect(i: number, j: number) {
+    //Фильтрует список грузовиков для селектора, исключая уже выбранные
+    public trucksForSelect(i: number, j: number) {
         return this.trucks.filter(element => {
             if (element === this.shiftForm.value.cranes[i][j].truck) return true;
             return this.shiftForm.value.cranes[i].every(({truck}) => element !== truck);
@@ -136,6 +147,7 @@ export class ShiftFormDialog {
         return this.cranes.value[i][j].truck;
     }
 
+    //Суммирует значения из формы по заданному свойству
     public getTotalByProp(prop) {
         let result = 0;
 
@@ -151,15 +163,11 @@ export class ShiftFormDialog {
     public close(): void {
         this.dialogRef.close();
     }
-    
-
-    public getErrorMessage() {
-        return this.shiftForm.get('name').hasError('required') ? 'Это поле обязательное для заполнения' : '';
-    }
 
     public setShift(): void {
         const shift = Object.assign({}, this.shiftForm.value);
 
+        //Отфильтровываем пустые данные и дополняем свойства для соответствия формату
         shift.cranes = shift.cranes.map(crane => {
             const filteredTruckInfo = crane.filter(({truck}) => truck);
             return filteredTruckInfo.map(element => {
@@ -169,6 +177,7 @@ export class ShiftFormDialog {
             });
         });
 
+        //Проверка на наличие входящих данных для формы
         if(this.data.isChange) {
             this.appService.editShift(this.shiftForm.value.id, shift).subscribe(() => {
                 this.close();
@@ -179,5 +188,4 @@ export class ShiftFormDialog {
             });
         }
     }
-
 }

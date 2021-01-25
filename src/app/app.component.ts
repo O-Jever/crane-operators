@@ -22,16 +22,19 @@ export class AppComponent implements OnInit {
     this.getShifts();
   }
 
+  //Получение списка смен для таблицы
   getShifts(): void {
     this.appService.getListOfShifts().subscribe(data => {
       this.dataSource = new MatTableDataSource<Shift>(data);
     });
   }
 
+  //Приведение даты к определенному формату
   formatDate(date) {
     return moment(date).format('DD.MM.YY H-mm');
   }
 
+  //Вычисление общего погруженного веса 
   getTotalLoaded(cranes) {
     let result = 0;
 

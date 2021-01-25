@@ -1,12 +1,15 @@
 <div class="wrapper">
 
+  <!-- Заголовок страницы -->
   <div class="header">
     <h1 class="header__title">Список смен</h1>
+    <!-- Кнопка для добавления смены -->
     <button mat-button (click)="addShift()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
 
+  <!-- Таблица со списком смен -->
   <table mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="fullName">
@@ -34,6 +37,7 @@
       <td mat-cell *matCellDef="let element"> {{ getTotalLoaded(element.cranes)}} </td>
     </ng-container>
 
+    <!-- Столбец для кнопок редактирования и удаления -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="actions">
